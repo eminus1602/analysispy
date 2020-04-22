@@ -78,7 +78,7 @@
 import math
 import numpy as np
 from scipy.optimize import least_squares, minimize, dual_annealing, brute, differential_evolution, basinhopping, shgo
-import data
+import analysispy.data
 
 
 # ---
@@ -95,8 +95,12 @@ def Lorentz(x,p):
     return p[3]+2*p[0]/math.pi*p[2]*np.reciprocal(4*np.power(x-p[1],2)+p[2]**2)
 
    
-#def Gaussian(x,a,x0,w,y0):
-#    return y0+a*np.exp(-4*log(2)*(x-x0)^2/w^2)/(w*np.sqrt(pi/4/log(2)))
+def Gauss(x,p):
+    a=p[0]
+    x0=p[1]
+    w=p[2]
+    y0=p[3]
+    return y0+a*np.exp(-(x-x0)**2/2/w**2)
 
 
 # p[0:3] Lorentz
@@ -207,6 +211,7 @@ log_residual_linear_factor=0
 
 fitmodel_funcs={
     'Lorentz':Lorentz,
+    'Gauss':Gauss,
     'NLorentz': NLorentz, 
     'LorentzPlusLinear': LorentzPlusLinear, 
     'MonoExpDecay': MonoExpDecay,
@@ -267,7 +272,7 @@ def residual_log(p, *args):
     y_func=args[0](x,pp)
     return np.sum(np.power(np.log(y_data+offset)-np.log(y_func+offset),2))+log_residual_linear_factor*math.log(np.sum(np.power(y_data-y_func,2)))
 
-class lfitting:
+class fit:
     def __init__(self):
         self.torelance = 1e-9
         self.method = 'trf'
@@ -275,7 +280,7 @@ class lfitting:
         self.param=[]
         self.fit_param=[]
         self.mask=[]
-        self.data=cdata.CSpectrum("")
+        self.data=analysispy.data.CSpectrum("")
         self.result=None
         self.tol=1e-9
         self.bounds=None

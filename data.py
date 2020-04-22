@@ -10,7 +10,7 @@ import scipy.signal
 import scipy.stats
 import scipy.ndimage.filters
 import scipy.ndimage
-import lfilecontrol
+import analysispy.filecontrol
 
 #class CData:
 class CBinaryData:

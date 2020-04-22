@@ -2,8 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 import re
-import lfilecontrol
-
+import analysispy.filecontrol
 
 class CLayout:
     def __init__(self,fn):
@@ -81,7 +80,7 @@ class CLayout:
 
     def read(self):
         fullpath=os.path.abspath(self.fn)
-        splpath=lfilecontrol.split_path(fullpath)
+        splpath=analysispy.filecontrol.split_path(fullpath)
         if not os.path.exists(fullpath):
             return False
         fp=open(fullpath,"r")
@@ -93,7 +92,7 @@ class CLayout:
         self.x_sizes=[int(i) for i in [data["Size.A{}.X".format(ai)] for ai in self.areas]]
         self.y_sizes=[int(i) for i in [data["Size.A{}.Y".format(ai)] for ai in self.areas]]
         self.parameters=data['ParameterNames'].split(',')
-        self.datafile=lfilecontrol.build_path(splpath['base'],data['Layout.File'])
+        self.datafile=analysispy.filecontrol.build_path(splpath['base'],data['Layout.File'])
         tsv=np.loadtxt(self.datafile)
         cols=['ai','xi','yi','x','y']
         cols.extend(self.parameters)
@@ -111,8 +110,8 @@ class CLayout:
         dev=self.df[ (self.df['ai']==ai) & (self.df['xi']==xi) & (self.df['yi']==yi) ]
         return [dev['x'].values[0],dev['y'].values[0]]
 
-server_address={"windows":"W:/", "linux":"/home/california/hidenori.machiya/Users/hidenori.machiya/"}
-database_folder="06-Layouts/labview/"
+server_address={"windows":"W:/", "linux":"/home/xxx"}
+database_folder="path-to-database-folder"
 
 class CLayouts:
     def __init__(self,type="windows"):
@@ -146,9 +145,9 @@ class CLayouts:
 
 def parse_data_file_path(fp):
     patterns={r"a(\d+)x(\d+)y(\d+)",r"(\d+)-(\d+)-(\d+)"}
-    pp=lfilecontrol.split_path(fp)
+    pp=analysispy.filecontrol.split_path(fp)
     file_name=pp['file']
-    pp2=lfilecontrol.split_path(pp['base'])
+    pp2=analysispy.filecontrol.split_path(pp['base'])
     working_dir=pp2['file']
     ai=-1
     xi=-1
@@ -166,7 +165,7 @@ def parse_data_file_path(fp):
     return [ai,xi,yi]
 
 def parse_scan_file(fp):
-    pp=lfilecontrol.split_path(fp)
+    pp=analysispy.filecontrol.split_path(fp)
     file_name=pp['file'].replace("  "," ").split(" ")
     id_str=file_name[-2]
     m=re.search(r"L(\d+)A(\d+)X(\d+)Y(\d+)",id_str)
