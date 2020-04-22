@@ -2,7 +2,6 @@ import sys
 import os
 import re
 import struct
-#from conffile import *
 import lcolormap
 import numpy as np
 import matplotlib.pyplot as plt
@@ -245,7 +244,7 @@ class CMatrix:
             axis=0
             value=x
             xt=self.y
-            zt=transpose(self.z)
+            zt=np.transpose(self.z)
         if y!=None:
             axis=1
             value=y

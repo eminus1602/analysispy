@@ -111,11 +111,12 @@ class CLayout:
         dev=self.df[ (self.df['ai']==ai) & (self.df['xi']==xi) & (self.df['yi']==yi) ]
         return [dev['x'].values[0],dev['y'].values[0]]
 
+server_address={"windows":"W:/", "linux":"/home/california/hidenori.machiya/Users/hidenori.machiya/"}
+database_folder="06-Layouts/labview/"
+
 class CLayouts:
     def __init__(self,type="windows"):
-        users_bases={"windows":"W:/", "linux":"/home/california/hidenori.machiya/Users/hidenori.machiya/"}
-        target_dir="06-Layouts/labview/"
-        self.ddir=users_bases[type]+target_dir
+        self.ddir=server_address[type]+database_folder
         self.open_ids=[]
         self.open_cache=[]
 

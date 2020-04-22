@@ -78,7 +78,7 @@
 import math
 import numpy as np
 from scipy.optimize import least_squares, minimize, dual_annealing, brute, differential_evolution, basinhopping, shgo
-import cdata
+import data
 
 
 # ---
